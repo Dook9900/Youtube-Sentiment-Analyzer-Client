@@ -1,10 +1,12 @@
-import InputCard from "@/components/InputCard/InputCard";
-import styles from "./page.module.scss";
+"use client";
+import { Provider } from "react-redux";
+import { store } from "@/app/store";
+import FrontPage from "@/components/FrontPage/FrontPage";
 
 export default function Home() {
   return (
-    <div className={styles.home}>
-      <InputCard />
-    </div>
+    <Provider store={store}>
+      <FrontPage />
+    </Provider>
   );
 }

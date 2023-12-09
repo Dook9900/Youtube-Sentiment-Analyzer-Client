@@ -85,7 +85,7 @@
   color: #676767;
 
   margin-top: 10px;
-  font-size: min(calc(1em + 2vw), 16px); // Will not go below 16px
+  font-size: min(calc(1em + 2vw), 16px);
   color: #676767;
 
   @media (max-width: 1396px) {
@@ -119,4 +119,51 @@
   &:hover {
     background-color: #45a049;
   }
+}
+
+.cardOverlay {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  backdrop-filter: blur(0);
+  background-color: rgba(0, 0, 0, 0);
+  pointer-events: none;
+  z-index: 1;
+  transition: backdrop-filter 0.3s ease, background-color 0.3s ease;
+}
+.iconContainer {
+  z-index: 1000;
+  cursor: help;
+}
+.cardFooter .iconContainer:hover + .cardOverlay {
+  display: block;
+  backdrop-filter: blur(5px);
+  background-color: rgba(0, 0, 0, 0.548);
+}
+
+.cardContent,
+.cardHeader {
+  transition: filter 0.3s ease;
+}
+
+.cardFooter .iconContainer:hover ~ .cardContent,
+.cardFooter .iconContainer:hover ~ .cardHeader {
+  filter: blur(5px);
+}
+
+.hoverText {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  z-index: 2;
+  pointer-events: none;
+}
+.cardFooter .iconContainer:hover + .cardOverlay + .hoverText {
+  display: block;
 }
