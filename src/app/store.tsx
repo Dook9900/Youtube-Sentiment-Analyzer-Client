@@ -3,6 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 
 const initialState = {
   URL: "",
+  videoTitle: "[Video Title]",
 };
 
 export const appSlice = createSlice({
@@ -12,10 +13,13 @@ export const appSlice = createSlice({
     setURL: (state, action: PayloadAction<string>) => {
       state.URL = action.payload;
     },
+    setVideoTitle: (state, action: PayloadAction<string>) => {
+      state.videoTitle = action.payload;
+    },
   },
 });
 
-export const { setURL } = appSlice.actions;
+export const { setURL, setVideoTitle } = appSlice.actions;
 
 export const store = configureStore({
   reducer: {

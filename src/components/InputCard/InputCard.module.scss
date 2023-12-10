@@ -48,6 +48,12 @@
 .youtubeLogo {
   width: 50px;
   height: auto;
+  cursor: pointer;
+  transition: filter 0.2s ease;
+}
+
+.youtubeLogo:hover {
+  filter: brightness(80%);
 }
 
 .cardImage {
@@ -62,9 +68,23 @@
   align-items: center;
   justify-content: center;
   width: 100%;
+
+  padding-top: 20px;
   gap: 3px;
 
   flex: 1;
+
+  .errorPlaceholder {
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .errorText {
+    color: red;
+    transition: opacity 0.3s ease;
+  }
 }
 
 .cardTitle {
@@ -115,9 +135,17 @@
   cursor: pointer;
   font-size: 1em;
   transition: background-color 0.3s ease;
+  user-select: none;
 
   &:hover {
     background-color: #45a049;
+  }
+
+  &:disabled {
+    background-color: #a5d6a7;
+    color: #cccccc;
+    cursor: not-allowed;
+    pointer-events: none;
   }
 }
 
@@ -163,6 +191,7 @@
   color: white;
   z-index: 2;
   pointer-events: none;
+  line-height: 1.4;
 }
 .cardFooter .iconContainer:hover + .cardOverlay + .hoverText {
   display: block;
