@@ -9,7 +9,7 @@ export default function FrontPage() {
   const $URL = useSelector((state: AppState) => state.user.URL);
 
   const [showResultsComponent, setShowResultsComponent] =
-    useState<boolean>(true);
+    useState<boolean>(false);
 
   useEffect(() => {
     $URL === ""
