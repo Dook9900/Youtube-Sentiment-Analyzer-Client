@@ -6,16 +6,16 @@ import { useEffect, useState } from "react";
 import ResultsComponent from "../ResultsComponent/ResultsComponent";
 
 export default function FrontPage() {
-  const $URL = useSelector((state: AppState) => state.user.URL);
+  const $title = useSelector((state: AppState) => state.user.video.videoTitle);
 
   const [showResultsComponent, setShowResultsComponent] =
     useState<boolean>(false);
 
   useEffect(() => {
-    $URL === ""
+    $title === ""
       ? setShowResultsComponent(false)
       : setShowResultsComponent(true);
-  }, [$URL]);
+  }, [$title]);
 
   return (
     <div className={styles.home}>

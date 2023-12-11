@@ -1,7 +1,12 @@
 import React, { ChangeEvent, useState } from "react";
 import styles from "./InputCard.module.scss";
-import { useDispatch } from "react-redux";
-import { setURL as setYoutubeURL } from "@/app/store";
+import { useSelector } from "react-redux";
+import {
+  AppState,
+  fetchAnalysisResults,
+  setURL,
+  useDispatch,
+} from "@/app/store";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import HelpIcon from "@mui/icons-material/Help";
 
@@ -10,6 +15,8 @@ Enter a URL to a YouTube video link to analyze it's viewer sentiment, based on u
 
 export const InputCard = () => {
   const dispatch = useDispatch();
+
+  const $loading = useSelector((state: AppState) => state.user.loading);
 
   const [URL, setURL] = useState<string>("");
   const [error, setError] = useState<string>("");
@@ -29,18 +36,18 @@ export const InputCard = () => {
       setError("");
       setURL(url);
     } else {
-      setError("Enter a YouTube link");
+      setError("Enter a YouTube video link");
       setURL("");
     }
   };
 
   const handleSubmit = () => {
     if (URL) {
-      dispatch(setYoutubeURL(URL));
+      dispatch(fetchAnalysisResults(URL));
     }
   };
 
-  const disabled = URL === "";
+  const disabled = URL === "" || $loading;
 
   return (
     <div className={styles.card}>
@@ -68,8 +75,15 @@ export const InputCard = () => {
           onClick={handleSubmit}
           disabled={disabled}
         >
-          Analyze
+          {$loading ? (
+            <div className={styles.analyzingContainer}>
+              <div className={styles.spinner}></div>Analyzing...
+            </div>
+          ) : (
+            "Analyze"
+          )}
         </button>
+
         <div className={styles.errorPlaceholder}>
           {error && <div className={styles.errorText}>{error}</div>}
         </div>
