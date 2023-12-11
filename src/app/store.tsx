@@ -47,8 +47,8 @@ export const fetchAnalysisResults = createAsyncThunk<analysisDTO, string>(
 );
 
 const initialState = {
-  URL: "",
   loading: false,
+  URLError: false,
   video: {
     videoTitle: "",
     total_comments: 0,
@@ -62,16 +62,12 @@ const initialState = {
 export const appSlice = createSlice({
   name: "app",
   initialState,
-  reducers: {
-    setURL: (state, action: PayloadAction<string>) => {
-      state.URL = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchAnalysisResults.pending, (state) => {
+        state.URLError = false;
         state.loading = true;
-        console.log("pending");
       })
       .addCase(fetchAnalysisResults.fulfilled, (state, action) => {
         state.loading = false;
@@ -86,14 +82,14 @@ export const appSlice = createSlice({
           negativeCount: analysis_results.negative_count,
         };
       })
-      .addCase(fetchAnalysisResults.rejected, (state, action) => {
+      .addCase(fetchAnalysisResults.rejected, (state) => {
+        state.URLError = true;
         state.loading = false;
-        console.log("error, ", action.error);
       });
   },
 });
 
-export const { setURL } = appSlice.actions;
+export const {} = appSlice.actions;
 
 export const store = configureStore({
   reducer: {

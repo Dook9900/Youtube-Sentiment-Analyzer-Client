@@ -1,12 +1,7 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import styles from "./InputCard.module.scss";
 import { useSelector } from "react-redux";
-import {
-  AppState,
-  fetchAnalysisResults,
-  setURL,
-  useDispatch,
-} from "@/app/store";
+import { AppState, fetchAnalysisResults, useDispatch } from "@/app/store";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import HelpIcon from "@mui/icons-material/Help";
 
@@ -17,6 +12,7 @@ export const InputCard = () => {
   const dispatch = useDispatch();
 
   const $loading = useSelector((state: AppState) => state.user.loading);
+  const $URLError = useSelector((state: AppState) => state.user.URLError);
 
   const [URL, setURL] = useState<string>("");
   const [error, setError] = useState<string>("");
@@ -48,6 +44,11 @@ export const InputCard = () => {
   };
 
   const disabled = URL === "" || $loading;
+
+  useEffect(() => {
+    if ($URLError)
+      setError("Error reaching this video, check if the URL is valid.");
+  }, [$URLError]);
 
   return (
     <div className={styles.card}>
