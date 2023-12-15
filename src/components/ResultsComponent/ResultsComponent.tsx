@@ -1,46 +1,99 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./ResultsComponent.module.scss";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { AppState } from "@/app/store";
+import { Collapse, IconButton } from "@mui/material";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 interface AnalysisItemProps {
   label: string;
   value: number | string;
   isNegative?: boolean;
   singleColumn?: boolean;
+  comments: string[];
 }
 
 const AnalysisItem: React.FC<AnalysisItemProps> = ({
   label,
   value,
+  comments,
   isNegative = false,
-  singleColumn,
 }) => {
+  const [expanded, setExpanded] = useState(false);
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
   return (
-    <div
-      className={`${styles.analysisItem} ${
-        singleColumn && styles.totalCommentItem
-      }`}
-    >
-      <span className={styles.label}>{label}:</span>
-      <span className={isNegative ? styles.negative : styles.positive}>
-        {value}
-      </span>
-    </div>
+    <>
+      <div className={`${styles.analysisItem}`}>
+        <span className={styles.label}>{label}:</span>
+        <span className={isNegative ? styles.negative : styles.positive}>
+          {value}
+        </span>
+        <IconButton
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+          size="small"
+          className={styles.expandButton}
+        >
+          {expanded ? (
+            <KeyboardArrowUpIcon
+              className={expanded ? styles.expandOpen : ""}
+            />
+          ) : (
+            <KeyboardArrowDownIcon
+              className={expanded ? styles.expandOpen : ""}
+            />
+          )}
+        </IconButton>
+      </div>
+      <Collapse
+        in={expanded}
+        timeout="auto"
+        unmountOnExit
+        style={{ width: "90%" }}
+      >
+        <div className={styles.commentsContainer}>
+          {comments.map((comment: string, index: number) => (
+            <div key={index} className={styles.comment}>
+              {comment}
+            </div>
+          ))}
+        </div>
+      </Collapse>
+    </>
   );
 };
 
 export const ResultsComponent = () => {
   const $analysis = useSelector((state: AppState) => state.user.video);
+  const { videoTitle, total_comments, details, label_comments } = $analysis;
 
-  const {
-    videoTitle,
-    total_comments,
-    positiveCount,
-    positiveRatio,
-    negativeCount,
-    negativeRatio,
-  } = $analysis;
+  const renderAnalysisItems = () => {
+    return Object.entries(details).map(([label, analysis]) => {
+      let negativeLabel;
+
+      negativeLabel = `Is ${label.replace("Is", "")}`;
+
+      const { positive, negative } = analysis;
+      const comments = label_comments[label] || [];
+
+      return (
+        <React.Fragment key={label}>
+          <AnalysisItem
+            label={negativeLabel}
+            value={negative}
+            isNegative
+            comments={comments}
+          />
+        </React.Fragment>
+      );
+    });
+  };
 
   return (
     <div className={styles.card}>
@@ -48,28 +101,11 @@ export const ResultsComponent = () => {
         <h3>Showing Analysis For:</h3>
         <h3 style={{ fontStyle: "italic" }}>{videoTitle}</h3>
       </div>
-      <AnalysisItem
-        label="Total Comments Analyzed"
-        value={total_comments}
-        singleColumn
-      />
-      <div className={styles.analysisContainer}>
-        <AnalysisItem label="Positive Count" value={positiveCount} />
-        <AnalysisItem
-          label="Positive Ratio"
-          value={(positiveRatio * 100).toFixed(2) + "%"}
-        />
-        <AnalysisItem
-          label="Toxic Count"
-          value={negativeCount}
-          isNegative={true}
-        />
-        <AnalysisItem
-          label="Toxic Ratio"
-          value={(negativeRatio * 100).toFixed(2) + "%"}
-          isNegative={true}
-        />
+      <div className={styles.stat}>
+        Total Comments Analyzed:{" "}
+        <strong className={styles.positive}>{total_comments}</strong>
       </div>
+      <div className={styles.analysisContainer}>{renderAnalysisItems()}</div>
     </div>
   );
 };

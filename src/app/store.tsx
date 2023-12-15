@@ -1,29 +1,44 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { configureStore } from "@reduxjs/toolkit";
 
-interface videoAnalysis {
-  videoTitle: string;
-  total_comments: number;
-  positiveRatio: number;
-  negativeRatio: number;
-  positiveCount: number;
-  negativeCount: number;
+interface LabelAnalysis {
+  positive: number;
+  negative: number;
+  comments: string[];
 }
 
-interface analysisDTO {
-  analysis_results: {
-    total_comments: number;
-    negative_count: number;
-    positive_count: number;
-    negative_ratio: number;
-    positive_ratio: number;
+interface AnalysisResults {
+  total_comments: number;
+  details: {
+    [label: string]: LabelAnalysis;
   };
+  label_comments: {
+    [label: string]: string[];
+  }; // Adding this line
+}
+
+interface AnalysisDTO {
+  analysis_results: AnalysisResults;
   video_title: string;
+}
+
+interface LabelAnalysis {
+  positive: number;
+  negative: number;
+  comments: string[];
+}
+
+interface VideoAnalysis {
+  videoTitle: string;
+  total_comments: number;
+  details: {
+    [label: string]: LabelAnalysis;
+  };
 }
 
 // Async thunk for requesting an analyssi from the flask server
 // given youtube URL
-export const fetchAnalysisResults = createAsyncThunk<analysisDTO, string>(
+export const fetchAnalysisResults = createAsyncThunk<AnalysisDTO, string>(
   "app/fetchAnalysisResults",
   async (youtubeURL: string) => {
     try {
@@ -38,6 +53,7 @@ export const fetchAnalysisResults = createAsyncThunk<analysisDTO, string>(
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
+
       return data;
     } catch (error) {
       console.error("Fetch error: ", error);
@@ -52,10 +68,8 @@ const initialState = {
   video: {
     videoTitle: "",
     total_comments: 0,
-    positiveRatio: 0,
-    negativeRatio: 0,
-    positiveCount: 0,
-    negativeCount: 0,
+    details: {} as { [label: string]: LabelAnalysis },
+    label_comments: {} as { [label: string]: string[] },
   },
 };
 
@@ -76,10 +90,8 @@ export const appSlice = createSlice({
         state.video = {
           videoTitle: video_title,
           total_comments: analysis_results.total_comments,
-          positiveRatio: analysis_results.positive_ratio,
-          negativeRatio: analysis_results.negative_ratio,
-          positiveCount: analysis_results.positive_count,
-          negativeCount: analysis_results.negative_count,
+          details: analysis_results.details,
+          label_comments: analysis_results.label_comments,
         };
       })
       .addCase(fetchAnalysisResults.rejected, (state) => {
