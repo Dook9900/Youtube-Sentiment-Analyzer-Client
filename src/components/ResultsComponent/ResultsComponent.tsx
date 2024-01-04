@@ -73,11 +73,11 @@ export const ResultsComponent = () => {
   const $analysis = useSelector((state: AppState) => state.user.video);
   const { videoTitle, total_comments, details, label_comments } = $analysis;
 
-  const isToxicNegativeCount = details["IsToxic"]?.negative || 0;
+  const isNegativeCount = details["IsNegative"]?.negative || 0;
 
-  const isToxicRatio = (isToxicNegativeCount / total_comments).toFixed(3);
+  const isNegastiveRatio = (isNegativeCount / total_comments).toFixed(3);
   const isPositiveRatio = (
-    (total_comments - isToxicNegativeCount) /
+    (total_comments - isNegativeCount) /
     total_comments
   ).toFixed(3);
 
@@ -115,7 +115,7 @@ export const ResultsComponent = () => {
       <div className={styles.stat}>
         Positive to Negative Ratio:{" "}
         <strong className={styles.positive}>{isPositiveRatio}</strong> :{" "}
-        <strong className={styles.negative}>{isToxicRatio}</strong>
+        <strong className={styles.negative}>{isNegastiveRatio}</strong>
       </div>
       <div className={styles.analysisContainer}>
         <strong style={{ color: "black" }}>Comment Details</strong>
