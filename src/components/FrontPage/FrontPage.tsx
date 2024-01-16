@@ -8,19 +8,10 @@ import ResultsComponent from "../ResultsComponent/ResultsComponent";
 export default function FrontPage() {
   const $title = useSelector((state: AppState) => state.user.video.videoTitle);
 
-  const [showResultsComponent, setShowResultsComponent] =
-    useState<boolean>(false);
-
-  useEffect(() => {
-    $title === ""
-      ? setShowResultsComponent(false)
-      : setShowResultsComponent(true);
-  }, [$title]);
-
   return (
     <div className={styles.home}>
       <InputCard />
-      {showResultsComponent && <ResultsComponent />}
+      {$title !== "" && <ResultsComponent />}
     </div>
   );
 }

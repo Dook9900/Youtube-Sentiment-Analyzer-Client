@@ -14,7 +14,7 @@ interface AnalysisResults {
   };
   label_comments: {
     [label: string]: string[];
-  }; // Adding this line
+  };
 }
 
 interface AnalysisDTO {

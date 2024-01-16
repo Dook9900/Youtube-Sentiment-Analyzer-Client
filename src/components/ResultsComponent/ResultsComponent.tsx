@@ -110,12 +110,18 @@ export const ResultsComponent = () => {
         <h3 style={{ fontStyle: "italic" }}>{videoTitle}</h3>
       </div>
       <div className={styles.stat}>
-        Total Comments Analyzed: <strong>{total_comments}</strong>
+        Total Comments Analyzed:{" "}
+        <div>
+          <strong>{total_comments}</strong>
+        </div>
       </div>
       <div className={styles.stat}>
         Positive to Negative Ratio:{" "}
-        <strong className={styles.positive}>{isPositiveRatio}</strong> :{" "}
-        <strong className={styles.negative}>{isNegastiveRatio}</strong>
+        <div>
+          {" "}
+          <strong className={styles.positive}>{isPositiveRatio}</strong> :{" "}
+          <strong className={styles.negative}>{isNegastiveRatio}</strong>
+        </div>
       </div>
       <div className={styles.analysisContainer}>
         <strong style={{ color: "black" }}>Comment Details</strong>
