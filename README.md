@@ -22,5 +22,5 @@ Clone the repository, install dependencies, and start:
    cd Youtube-Sentiment-Analyzer-Client
    npm install
    npm start
-
+```
 This will run the app in development mode. Open http://localhost:3000 to view it in the browser.
