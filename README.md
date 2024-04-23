@@ -24,3 +24,6 @@ Clone the repository, install dependencies, and start:
    npm start
 ```
 This will run the app in development mode. Open http://localhost:3000 to view it in the browser.
+
+You should also run the server that accompanies this app:
+https://github.com/aaronchenghs/youtube-sentiment-analyzer-server
