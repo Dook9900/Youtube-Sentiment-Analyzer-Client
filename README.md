@@ -21,7 +21,6 @@ This repository hosts the front-end of the YouTube Comment Sentiment Analyzer, a
    git clone https://github.com/aaronchenghs/Youtube-Sentiment-Analyzer-Client.git
    cd Youtube-Sentiment-Analyzer-Client
    npm install
-npm start
-
+   npm start
 
 This will run the app in development mode. Open http://localhost:3000 to view it in the browser.
