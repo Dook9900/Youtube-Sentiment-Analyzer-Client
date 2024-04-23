@@ -16,7 +16,7 @@ This repository hosts the front-end of the YouTube Comment Sentiment Analyzer, a
 
 ### Installation
 
-1. Clone the repository:
+Clone the repository, install dependencies, and start:
    ```bash
    git clone https://github.com/aaronchenghs/Youtube-Sentiment-Analyzer-Client.git
    cd Youtube-Sentiment-Analyzer-Client
